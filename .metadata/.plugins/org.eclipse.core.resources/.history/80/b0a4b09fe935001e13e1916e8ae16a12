@@ -1,0 +1,88 @@
+import java.util.*;
+
+class Question {
+    private String question;
+    private int answer;
+
+    public Question(String question, int answer) {
+        this.question = question;
+        this.answer = answer;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public int getAnswer() {
+        return answer;
+    }
+}
+
+class Student {
+    private String name;
+    private int score;
+
+    public Student(String name) {
+        this.name = name;
+        this.score = 0;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void increaseScore() {
+        score++;
+    }
+}
+
+public class MathQuiz {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter student's name: ");
+        String studentName = scanner.nextLine();
+
+        Student student = new Student(studentName);
+        List<Question> questions = generateQuestions();
+        int totalTime = 45; // in minutes
+
+        System.out.println("Welcome to the Math Quiz, " + student.getName() + "!");
+        System.out.println("You have " + totalTime + " minutes to complete the quiz.");
+
+        // Code to start the timer and ask questions to the student
+
+        // After the quiz is complete
+
+        System.out.println("Quiz completed!");
+        System.out.println("Generating report...");
+
+        // Calculate and display the grade based on the student's score
+
+        // Write the student's information and score to a text file
+
+        System.out.println("Report generated.");
+
+        // Close scanner
+        scanner.close();
+    }
+
+    // Method to generate a list of random math questions
+    private static List<Question> generateQuestions() {
+        // Generate and return a list of Question objects
+    }
+
+    // Method to calculate and return the grade based on the student's score
+    private static String calculateGrade(int score) {
+        // Calculate and return the grade
+    }
+
+    // Method to write student information and score to a text file
+    private static void writeToFile(String fileName, String content) {
+        // Write content to the file
+    }
+}

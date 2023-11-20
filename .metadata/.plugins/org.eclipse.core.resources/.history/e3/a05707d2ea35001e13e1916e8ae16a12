@@ -1,0 +1,103 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
+
+public class MathQuizApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Math Quiz!");
+        System.out.print("Enter your name: ");
+        String studentName = scanner.nextLine();
+
+        System.out.println("Do you need extra time? (yes/no): ");
+        String extraTimeInput = scanner.nextLine();
+        int totalTime = (extraTimeInput.equalsIgnoreCase("yes")) ? 60 : 45;
+
+        List<Question> questions = generateQuestions();
+
+        int score = 0;
+
+        for (Question question : questions) {
+            System.out.println(question.getQuestion());
+            int answer = scanner.nextInt();
+
+            if (answer == question.getAnswer()) {
+                System.out.println("Correct!\n");
+                score++;
+            } else {
+                System.out.println("Incorrect. The correct answer is: " + question.getAnswer() + "\n");
+            }
+        }
+
+        System.out.println("Test completed!");
+        System.out.println("Your score: " + score);
+
+        String grade;
+        if (score >= 17) {
+            grade = "Distinction";
+        } else if (score >= 11) {
+            grade = "Merit";
+        } else if (score >= 5) {
+            grade = "Pass";
+        } else {
+            grade = "Fail";
+        }
+
+        System.out.println("Grade: " + grade);
+
+        saveToFile(studentName, score, grade);
+
+        scanner.close();
+    }
+
+    private static List<Question> generateQuestions() {
+        List<Question> questions = new ArrayList<>();
+        Random random = new Random();
+
+        for (int i = 0; i < 10; i++) {
+            int num1 = random.nextInt(40) + 10;
+            int num2 = random.nextInt(40) + 10;
+            int answer = num1 + num2;
+            questions.add(new Question("What is " + num1 + " + " + num2 + "?", answer));
+        }
+
+        for (int i = 0; i < 10; i++) {
+            int num1 = random.nextInt(41) + 10;
+            int num2 = random.nextInt(41) + 10;
+            int answer = num1 * num2;
+            questions.add(new Question("What is " + num1 + " * " + num2 + "?", answer));
+        }
+
+        Collections.shuffle(questions);
+        return questions;
+    }
+
+    private static void saveToFile(String studentName, int score, String grade) {
+        try {
+            FileWriter writer = new FileWriter("results.txt", true);
+            writer.write(studentName + ": " + score + " (" + grade + ")\n");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+class Question {
+    private final String question;
+    private final int answer;
+
+    public Question(String question, int answer) {
+        this.question = question;
+        this.answer = answer;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public int getAnswer() {
+        return answer;
+    }
+}

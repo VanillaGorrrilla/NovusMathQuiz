@@ -1,0 +1,63 @@
+import java.util.*;
+import java.io.*;
+
+public class MathQuizConsoleApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Welcome to the Math Quiz!");
+        System.out.print("Enter your name: ");
+        String studentName = scanner.nextLine();
+        
+        int totalTime = 45;  // Default time in minutes
+        System.out.print("Do you need extended time? (yes/no): ");
+        String extendedTime = scanner.nextLine();
+        if (extendedTime.equalsIgnoreCase("yes")) {
+            totalTime = 60;
+        }
+        
+        int score = conductQuiz();
+        
+        System.out.println("Quiz completed!");
+        System.out.println("Calculating grade...");
+        
+        String grade = calculateGrade(score);
+        
+        System.out.println("Name: " + studentName);
+        System.out.println("Total Score: " + score);
+        System.out.println("Grade: " + grade);
+        
+        saveToFile(studentName, score, grade);
+    }
+    
+    public static int conductQuiz() {
+        // Implement the quiz logic here and return the score
+        // You'll need to generate questions, take answers, and calculate the score
+    }
+    
+    public static String calculateGrade(int score) {
+        if (score >= 17) {
+            return "Distinction";
+        } else if (score >= 11) {
+            return "Merit";
+        } else if (score >= 5) {
+            return "Pass";
+        } else {
+            return "Fail";
+        }
+    }
+    
+    public static void saveToFile(String name, int score, String grade) {
+        try {
+            FileWriter writer = new FileWriter("quiz_results.txt", true);
+            writer.write("Name: " + name + "\n");
+            writer.write("Score: " + score + "\n");
+            writer.write("Grade: " + grade + "\n");
+            writer.write("\n");
+            writer.close();
+            System.out.println("Results saved to quiz_results.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

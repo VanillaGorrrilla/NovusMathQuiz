@@ -1,0 +1,89 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
+
+public class MathQuizConsoleApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Welcome to the Math Quiz!");
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
+        
+        System.out.print("Enter the password (or 'Novus' for extended time): ");
+        String password = scanner.nextLine();
+        int timeLimit = password.equals("Novus") ? 60 : 45;
+        
+        int scoreAddition = 0, scoreSubtraction = 0, scoreMultiplication = 0, scoreDivision = 0;
+        Random random = new Random();
+        
+        // Generate and ask 10 basic arithmetic questions
+        for (int i = 0; i < 10; i++) {
+            int num1 = random.nextInt(50) + 1;
+            int num2 = random.nextInt(50) + 1;
+            int result = 0;
+            
+            int operator = random.nextInt(4); // 0: +, 1: -, 2: *, 3: /
+            switch (operator) {
+                case 0:
+                    System.out.printf("Question %d: What is %d + %d? ", i + 1, num1, num2);
+                    result = num1 + num2;
+                    break;
+                // Add cases for subtraction, multiplication, and division
+            }
+            
+            int answer = scanner.nextInt();
+            if (answer == result) {
+                System.out.println("Correct!");
+                // Update score based on operator
+            } else {
+                System.out.println("Incorrect!");
+            }
+        }
+        
+        // Generate and ask 10 multiple arithmetic questions
+        for (int i = 0; i < 10; i++) {
+            // Generate a question with multiple arithmetic operations
+            // Ensure values are within the specified range and not repeated
+            // Ask the question and check the answer
+            // Update score based on the correctness of the answer
+        }
+        
+        // Calculate the total score and determine the grade
+        int totalScore = scoreAddition + scoreSubtraction + scoreMultiplication + scoreDivision;
+        String grade = calculateGrade(totalScore);
+        
+        // Display the remaining time and the grade
+        System.out.printf("Time remaining: %d minutes%n", timeLimit);
+        System.out.printf("Total Score: %d%n", totalScore);
+        System.out.printf("Grade: %s%n", grade);
+        
+        // Create a text file with the student's name and scores
+        try {
+            FileWriter writer = new FileWriter(name + "_scores.txt");
+            writer.write("Name: " + name + "\n");
+            writer.write("Addition Score: " + scoreAddition + "\n");
+            writer.write("Subtraction Score: " + scoreSubtraction + "\n");
+            writer.write("Multiplication Score: " + scoreMultiplication + "\n");
+            writer.write("Division Score: " + scoreDivision + "\n");
+            writer.close();
+            System.out.println("Scores saved to " + name + "_scores.txt");
+        } catch (IOException e) {
+            System.out.println("Error saving scores to file.");
+        }
+    }
+
+    // Helper method to calculate the grade
+    private static String calculateGrade(int score) {
+        if (score >= 17) {
+            return "Distinction";
+        } else if (score >= 11) {
+            return "Merit";
+        } else if (score >= 5) {
+            return "Pass";
+        } else {
+            return "Fail";
+        }
+    }
+}

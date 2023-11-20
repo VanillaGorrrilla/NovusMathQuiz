@@ -1,0 +1,103 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
+
+public class MathQuizApplication {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Math Quiz!");
+
+        System.out.print("Enter your name: ");
+        String studentName = scanner.nextLine();
+
+        System.out.println("You have 45 minutes to complete the quiz.");
+        System.out.print("Do you want 60 minutes? (yes/no): ");
+        String timeExtensionChoice = scanner.nextLine();
+        boolean extendedTime = timeExtensionChoice.equalsIgnoreCase("yes");
+
+        int totalTime = extendedTime ? 60 : 45; // minutes
+        int totalQuestions = 20;
+
+        int[] scorePerType = new int[4]; // Index 0: Addition, 1: Subtraction, 2: Multiplication, 3: Division
+
+        Random random = new Random();
+
+        for (int i = 1; i <= totalQuestions; i++) {
+            int num1, num2, result, operatorIndex;
+            char operator;
+            
+            // Generate two distinct numbers between 1 and 50
+            num1 = random.nextInt(50) + 1;
+            num2 = random.nextInt(50) + 1;
+            while (num2 == num1) {
+                num2 = random.nextInt(50) + 1;
+            }
+
+            // Choose a random operator (0: +, 1: -, 2: *, 3: /)
+            operatorIndex = random.nextInt(4);
+            operator = operatorIndex switch {
+                0 => '+',
+                1 => '-',
+                2 => '*',
+                3 => '/',
+                _ => '+'
+            };
+
+            System.out.printf("Question %d: What is %d %c %d? ", i, num1, operator, num2);
+            int userAnswer = scanner.nextInt();
+
+            switch (operator) {
+                case '+':
+                    result = num1 + num2;
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    result = num1 / num2;
+                    break;
+                default:
+                    result = 0; // Default value, won't be used
+            }
+
+            if (userAnswer == result) {
+                scorePerType[operatorIndex]++;
+            }
+        }
+
+        // Calculate the total score
+        int totalScore = scorePerType[0] + scorePerType[1] + scorePerType[2] + scorePerType[3];
+
+        // Determine the grade
+        String grade;
+        if (totalScore <= 4) {
+            grade = "Fail";
+        } else if (totalScore <= 10) {
+            grade = "Pass";
+        } else if (totalScore <= 16) {
+            grade = "Merit";
+        } else {
+            grade = "Distinction";
+        }
+
+        System.out.println("Quiz completed!");
+        System.out.println("Grade: " + grade);
+
+        // Write the results to a text file
+        try (FileWriter writer = new FileWriter(studentName + "_results.txt")) {
+            writer.write("Student: " + studentName + "\n");
+            writer.write("Addition: " + scorePerType[0] + "\n");
+            writer.write("Subtraction: " + scorePerType[1] + "\n");
+            writer.write("Multiplication: " + scorePerType[2] + "\n");
+            writer.write("Division: " + scorePerType[3] + "\n");
+            writer.write("Total Score: " + totalScore);
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing results to file.");
+        }
+    }
+}
